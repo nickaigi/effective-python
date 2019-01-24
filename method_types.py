@@ -2,13 +2,22 @@
 # demonstrates the difference between
 # instance methods, class methods, and static methods
 
+from enum import Enum
+
 
 class Person(object):
+    class Category(Enum):
+        # Enum is not a class
+        # https://docs.python.org/3/library/enum.html#how-are-enums-different
+        student = 1
+        teacher = 2
 
     counter = 0  # class attribute
 
-    def __init__(self, name):
+    def __init__(self, name, age, category):
         self.name = name
+        self.age = age
+        self.category = category
         type(self).counter += 1
         # type(self) will evaluate to Person
         # might as well write Person.counter
@@ -19,7 +28,7 @@ class Person(object):
         - receives self
         - thus can modify instance attributes
         """
-        print('my name is {}'.format(self.name))
+        print('{} - {} - {}'.format(self.name, self.age, self.category))
 
     @classmethod
     def number_of_people(cls):
@@ -29,6 +38,14 @@ class Person(object):
         - thus can modify class attributes attributes
         """
         print('we have created {} people'.format(cls.counter))
+
+    @classmethod
+    def teacher(cls, name, age):
+        return cls(name, age, cls.Category.teacher)
+
+    @classmethod
+    def student(cls, name, age):
+        return cls(name, age, cls.Category.student)
 
     @staticmethod
     def add(a, b):
@@ -41,13 +58,11 @@ class Person(object):
 
 
 if __name__ == '__main__':
-    p1 = Person('Nick')
-    p2 = Person('Guido')
-    p3 = Person('Knuth')
+    nick = Person.student('Nick', 30)
+    nick.speak()
 
-    p1.speak()
-    p2.speak()
-    p3.speak()
+    don = Person.teacher('Don', 81)
+    don.speak()
 
     Person.number_of_people()
-    Person.add(2, 3)
+    import pdb; pdb.set_trace()
