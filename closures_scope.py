@@ -31,6 +31,9 @@ class Sorter(object):
         self.found = False
 
     def __call__(self, x):
+        """ this is triggered when the instance of Sorter is called
+        https://stackoverflow.com/a/9663601/1010338
+        """
         if x in self.group:
             self.found = True
             return (0, x)
