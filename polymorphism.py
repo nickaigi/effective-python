@@ -1,6 +1,7 @@
 import os
+import random
 from threading import Thread
-from tempfile import TemporaryFile, TemporaryDirectory
+from tempfile import TemporaryDirectory
 
 
 class InputData(object):
@@ -65,21 +66,18 @@ def execute(workers):
 
 def mapreduce(data_dir):
     inputs = generate_inputs(data_dir)
-    import pdb; pdb.set_trace()
     workers = create_workers(inputs)
     return execute(workers)
 
 
 def write_test_files(tmpdir):
-    with TemporaryFile() as fp:
-        fp.write(b'hello world!')
-        fp.seek(0)
-        fp.read()
+    for i in range(100):
+        with open(os.path.join(tmpdir, str(i)), 'w') as f:
+            f.write('\n' * random.randint(0,100))
 
 
-if __name__ == '__main__':
-    with TemporaryDirectory() as tmpdir:
-        write_test_files(tmpdir)
-        result = mapreduce(tmpdir)
+with TemporaryDirectory() as tmpdir:
+    write_test_files(tmpdir)
+    result = mapreduce(tmpdir)
 
-    print('there are', result, 'lines')
+print('there are', result, 'lines')
