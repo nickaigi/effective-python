@@ -33,9 +33,13 @@ class Pizza(object):
         return r ** 2 * math.pi
 
 
-if __name__ == '__main__':
+def main():
     margherita = Pizza.margherita()
     prosciutto = Pizza.prosciutto()
 
     print(margherita.area())
     print(Pizza.circle_area(4))
+
+
+if __name__ == '__main__':
+    main()
