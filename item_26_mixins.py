@@ -7,7 +7,6 @@ that a class should provide.
 require their __init__ constructor to be called.
 """
 
-import pprint
 import json
 
 
@@ -48,7 +47,7 @@ class BinaryTreeWithParent(BinaryTree):
 
     def _traverse(self, key, value):
         if isinstance(value, BinaryTreeWithParent) and key == 'parent':
-            return value.value # prevent cycles
+            return value.value  # prevent cycles
         else:
             return super()._traverse(key, value)
 
@@ -72,7 +71,7 @@ class JsonMixin(object):
 class DatacenterRack(ToDictMixin, JsonMixin):
     def __init__(self, switch=None, machines=None):
         self.switch = Switch(**switch)
-        self.machines = [Machine(**kwars) for kwargs in machines]
+        self.machines = [Machine(**kwargs) for kwargs in machines]
 
 
 class Switch(ToDictMixin, JsonMixin):
@@ -86,7 +85,6 @@ class Machine(ToDictMixin, JsonMixin):
         self.cores = cores
         self.ram = ram
         self.disk = disk
-
 
 
 def main():
@@ -110,7 +108,7 @@ def main():
         "machines": [
             {"cores": 8, "ram": 32e9, "disk": 5e12},
             {"cores": 4, "ram": 16e9, "disk": 1e12},
-            {"cores": 2, "ram": 4e9, "disk": 500e9},
+            {"cores": 2, "ram": 4e9, "disk": 500e9}
         ]
     }"""
 
