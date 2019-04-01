@@ -63,7 +63,7 @@ class BetterSerializable(object):
     def serialize(self):
         return json.dumps({
             'class': self.__class__.__name__,
-            'args': self.args
+            'args': self.args,
         })
 
     def __repr__(self):
@@ -73,7 +73,7 @@ class BetterSerializable(object):
 
 
 def register_class(target_class):
-    registry[target_class] = target_class
+    registry[target_class.__name__] = target_class
 
 
 def deserialize(data):
@@ -84,7 +84,19 @@ def deserialize(data):
 
 
 class EvenBetterPoint2D(BetterSerializable):
+    """ Works like this
+    >>> point = EvenBetterPoint2D(5, 3)
+    >>> print('Before:   ', point)
+    >>> data = point.serialize()
+    >>> print('Serialized:', data)
+    >>> after = deserialize(data)
+    >>> print('After:    ', after)
+    Before:    EvenBetterPoint2D(5, 3)
+    Serialized: {"class": "EvenBetterPoint2D", "args": [5, 3]}
+    After:     EvenBetterPoint2D(5, 3
+    """
     def __init__(self, x, y):
+        super().__init__(x, y)
         self.x = x
         self.y = y
 
@@ -92,13 +104,24 @@ class EvenBetterPoint2D(BetterSerializable):
 register_class(EvenBetterPoint2D)
 
 
+class Point3D(BetterSerializable):
+    """ Try this
+    >>> point = Point3D(5, 9, -4)
+    >>> data = point.serialize()
+    >>> deserialize(data)
+    KeyError: 'Point3D'
+
+    KeyError because we forgot to register_class
+    """
+    def __init__(self, x, y, z):
+        super().__init__(x, y, z)
+        self.x = x
+        self.y = y
+        self.z = z
+
+
 def main():
-    point = EvenBetterPoint2D(5, 3)
-    print('Before:   ', point)
-    data = point.serialize()
-    print('Serialized:', data)
-    after = deserialize(data)
-    print('After:    ', after)
+    pass
 
 
 if __name__ == '__main__':
