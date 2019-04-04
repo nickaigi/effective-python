@@ -1,3 +1,31 @@
+""" The operation
+>>> counter.count += offset
+
+is an abstraction of
+
+>>> value = getattr(counter, 'count')
+>>> result = value + offset
+>>> setattr(counter, 'count', result)
+
+A thread maybe interrupted at any of the steps above.
+E.g.
+
+    Running in Thread A
+
+    >>> value_a = getattr(conter, 'count')
+
+    # context switch to Thread B
+    >>> value_b = getattr(conter, 'count')
+    >>> result_b = value_b + 1
+    >>> setattr(counter, 'count', result_b)
+
+    # context switch to Thread A
+    >>> result_a = value_a + 1
+    >>> setattr(counter, 'count', result_a)
+
+Thread A trampled over Thread B, erasing all of its progress incrementing the
+counter
+"""
 from threading import Thread, Lock
 
 
@@ -10,6 +38,13 @@ class Counter(object):
 
 
 class LockingCounter(object):
+    """
+    We use a lock to avoid a race condition.
+        A condition caused by potentially concurrent operations on a shared
+        memory location of which at least one is a write operation.
+    - two or more threads modify a variable causing unexpected results as
+    a result of the threads accessing the variable at different times
+    """
     def __init__(self):
         self.lock = Lock()
         self.count = 0
