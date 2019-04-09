@@ -9,6 +9,7 @@ import time
 # The buffer size causes calls to put to block when the queue is already full.
 
 queue = Queue(1)  # Buffer size of 1
+in_queue = Queue()
 
 
 def download(item):
@@ -90,6 +91,7 @@ def consumer():
     print('Consumer got 2')
 
 
+
 def example_two():
     """
     >>> 
@@ -118,5 +120,24 @@ def example_three():
     thread.join()
     print('Producer done')
 
+
+def consumer_four():
+    print('Consumer waiting')
+    work = in_queue.get()  # Done second
+    print('Consumer Working')
+    # Doing work
+    print('Consumer done')
+    in_queue.task_done()  # Done third
+
+
+def example_four():
+    Thread(target=consumer_four).start()
+    in_queue.put(object())  # Done first
+    print('Producer waiting')
+    in_queue.join()  # Done fourth
+    print('Producer done')
+
+
 if __name__ == '__main__':
-    example_two()
+    # example_two()  # hungs
+    example_four()
