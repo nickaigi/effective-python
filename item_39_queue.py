@@ -1,6 +1,14 @@
 from threading import Lock, Thread
 from collections import deque
+from queue import Queue
 import time
+
+
+# To solve the pipeline backup issue, the Queue class lets you specify the
+# maximum amount of pending work you'll allow between two phases.
+# The buffer size causes calls to put to block when the queue is already full.
+
+queue = Queue(1)  # Buffer size of 1
 
 
 def download(item):
@@ -74,5 +82,41 @@ def example_one():
     print('Processed', processed, ' items after polling', polled, ' times')
 
 
+def consumer():
+    time.sleep(0.1)  # wait
+    queue.get()  # runs second
+    print('Consumer got 1')
+    queue.get()  # runs fourth
+    print('Consumer got 2')
+
+
+def example_two():
+    """
+    >>> 
+    Consumer waiting
+    Producer putting
+    Consumer done
+    Producer done
+    """
+    thread = Thread(target=consumer)
+    thread.start()
+
+    print('Producer putting')
+    queue.put(object())  # runs before get() above
+    thread.join()
+    print('Producer done')
+
+
+def example_three():
+    thread = Thread(target=consumer)
+    thread.start()
+
+    queue.put(object())  # runs first
+    print('Producer put 1')
+    queue.put(object())  # runs third
+    print('Producer put 2')
+    thread.join()
+    print('Producer done')
+
 if __name__ == '__main__':
-    example_one()
+    example_two()
