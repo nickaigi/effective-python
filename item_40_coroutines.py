@@ -3,9 +3,8 @@ from collections import namedtuple
 
 ALIVE = '*'
 EMPTY = '-'
-
-
 Query = namedtuple('Query', ('y', 'x'))
+Transition = namedtuple('Transition', ('y', 'x', 'state'))
 
 
 def my_coroutine():
@@ -35,6 +34,7 @@ def minimize():
         value = yield current
         current = min(value, current)
 
+
 def example_two():
     """
     >>> 
@@ -50,7 +50,6 @@ def example_two():
     print(it.send(4))
     print(it.send(22))
     print(it.send(-1))
-
 
 
 def count_neighbors(y, x):
@@ -98,6 +97,29 @@ def example_three():
         it.send(EMPTY)         # Send q8 state, retrieve count
     except StopIteration as e:
         print('Count: ', e.value)  # value form return statement
+
+
+def step_cell(y, x):
+    state = yield Query(y, x)
+    neighbors = yield from count_neighbors(y, x)
+    next_state = game_logic(state, neighbors)
+    yield Transition(y, x, next_state)
+
+
+def game_logic(state, neighbors):
+    if state = ALIVE:
+        if neighbors < 2:
+            return EMPTY     # Die: Too few
+        elif neighbors > 3:
+            return EMPTY     # Die: Too many
+    else:
+        if neighbors == 3:
+            return ALIVE     # Regenerate
+    return state
+
+
+def example_four():
+    pass
 
 
 def main():
