@@ -121,7 +121,10 @@ def game_logic(state, neighbors):
 def example_four():
     """
     >>> 
-    pass
+    Me:       Query(y=10, x=5)
+    Q1:       Query(y=11, x=5)
+    ...
+    Outcome:  Transition(y=10, x=5, state='-')
     """
     it = step_cell(10, 5)
     q0 = next(it)            # Initial location query
