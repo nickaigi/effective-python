@@ -107,7 +107,7 @@ def step_cell(y, x):
 
 
 def game_logic(state, neighbors):
-    if state = ALIVE:
+    if state == ALIVE:
         if neighbors < 2:
             return EMPTY     # Die: Too few
         elif neighbors > 3:
@@ -119,11 +119,29 @@ def game_logic(state, neighbors):
 
 
 def example_four():
+    """
+    >>> 
     pass
+    """
+    it = step_cell(10, 5)
+    q0 = next(it)            # Initial location query
+    print('Me:      ', q0)
+    q1 = it.send(ALIVE)      # Send my status, get neighbor query
+    print('Q1:      ', q1)
+    print('...')
+    q2 = it.send(ALIVE)
+    q3 = it.send(ALIVE)
+    q4 = it.send(ALIVE)
+    q5 = it.send(ALIVE)
+    q6 = it.send(EMPTY)
+    q7 = it.send(EMPTY)
+    q8 = it.send(EMPTY)
+    t1 = it.send(EMPTY)    # Send for q8, get same decision
+    print('Outcome: ', t1)
 
 
 def main():
-    example_three()
+    example_four()
 
 
 if __name__ == '__main__':
