@@ -171,7 +171,7 @@ class Grid(object):
     def query(self, y, x):
         return self.rows[y % self.height][x % self.width]
 
-    def assign(self, y, x):
+    def assign(self, y, x, state):
         self.rows[y % self.height][x % self.width] = state
 
 
@@ -185,16 +185,7 @@ def live_a_generation(grid, sim):
         else:  # must be a transition
             progeny.assign(item.y, item.x, item.state)
             item = next(sim)
-
-
-def example_five():
-    grid = Grid(5, 9)
-    grid.assign(0, 3, ALIVE)
-    grid.assign(1, 4, ALIVE)
-    grid.assign(2, 2, ALIVE)
-    grid.assign(2, 3, ALIVE)
-    grid.assign(2, 4, ALIVE)
-    print(grid)
+    return progeny
 
 
 class ColumnPrinter(object):
@@ -221,35 +212,35 @@ class ColumnPrinter(object):
                     rows[j] += ' | '
         return '\n'.join(rows)
 
-columns = ColumnPrinter()
-sim = simulate(grid.height, grid.width)
-for i in range(5):
-    columns.append(str(grid))
-    grid = live_a_generation(grid, sim)
 
+def example_five():
+    """
+    >>> 
+        0     |     1     |     2     |     3     |     4
+    ---*----- | --------- | --------- | --------- | ---------
+    ----*---- | --*-*---- | ----*---- | ---*----- | ----*----
+    --***---- | ---**---- | --*-*---- | ----**--- | -----*---
+    --------- | ---*----- | ---**---- | ---**---- | ---***---
+    --------- | --------- | --------- | --------- | ---------
+    """
+    grid = Grid(5, 9)
+    grid.assign(0, 3, ALIVE)
+    grid.assign(1, 4, ALIVE)
+    grid.assign(2, 2, ALIVE)
+    grid.assign(2, 3, ALIVE)
+    grid.assign(2, 4, ALIVE)
 
-print(columns)
+    columns = ColumnPrinter()
+    sim = simulate(grid.height, grid.width)
+    for i in range(5):
+        columns.append(str(grid))
+        grid = live_a_generation(grid, sim)
 
-
-grid = Grid(5,5)
-grid.assign(1, 1, ALIVE)
-grid.assign(2, 2, ALIVE)
-grid.assign(2, 3, ALIVE)
-grid.assign(3, 3, ALIVE)
-
-
-columns = ColumnPrinter()
-sim = simulate(grid.height, grid.width)
-for i in range(5):
-    columns.append(str(grid))
-    grid = live_a_generation(grid, sim)
-
-
-print(columns)
+    print(columns)
 
 
 def main():
-    example_four()
+    example_five()
 
 
 if __name__ == '__main__':
