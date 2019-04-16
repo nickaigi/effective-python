@@ -39,7 +39,7 @@ def debug_logging(level):
     old_level = logger.getEffectiveLevel()
     logger.setLevel(level)
     try:
-       yield 
+        yield 
     finally:
         logger.setLevel(old_level)
 
@@ -61,8 +61,51 @@ def example_three():
     my_function()
 
 
+def example_four():
+    """the context manager passed to a 'with' statement may also return an
+    object
+    - this approach is preferable to manually opening and closing the file
+      handle every time. It gives you confidence that the file is eventually
+      closed when execution leaves the 'with' statement.
+    - Its good practice to reduce the amount of code that executes while the
+      file handle is open
+    """
+    with open('/tmp/my_file.txt', 'w') as handle:
+        handle.write('This is some data!')
+
+
+@contextmanager
+def log_level(level, name):
+    logger = logging.getLogger(name)
+    old_level = logger.getEffectiveLevel()
+    logger.setLevel(level)
+    try:
+        yield logger
+    finally:
+        logger.setLevel(old_level)
+
+
+def example_five():
+    """
+    I don't get any output on this code
+    """
+    with log_level(logging.DEBUG, 'my-log') as logger:
+        logger.debug('This is my message!')
+        logging.debug('This will not print')
+
+
+def example_six():
+    """
+    >>> 
+    Error will print
+    """
+    logger = logging.getLogger('my-log')
+    logger.debug('Debug will not print')
+    logger.error('Error will print')
+
+
 def main():
-    example_three()
+    example_six()
 
 
 if __name__ == '__main__':
