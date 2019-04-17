@@ -1,4 +1,6 @@
-""" pickle can serialized python objects into a stream of bytes and deserialize bytes back into objects.
+""" pickle can serialized python objects into a stream of bytes and
+deserialize bytes back into objects.
+
 Note:
     by design, pickle is unsafe!
 """
@@ -61,8 +63,20 @@ def example_two():
     print(state_after.__dict__)
 
 
+def example_three():
+    """
+    - What happens when we try to access an older saved GameState but the
+    defination of GameState has changed to GameStateNew ?
+    """
+    state_after = load_game()
+    try:
+        assert isinstance(state_after, GameStateNew)
+    except AssertionError:
+        print('AssertionError: We knew')
+
+
 def main():
-    example_two()
+    example_three()
 
 
 if __name__ == '__main__':
