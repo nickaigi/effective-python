@@ -111,15 +111,14 @@ def example_four():
     print(state_after.__dict__)
 
 
-def example_five():
-    try:
-        pickle.loads()
-    except:
-        pass
-
 
 def main():
     example_four()
+
+    # TODO things got unclear from this point onwards,
+    # book describes removing lives form the game state, and versioning.
+    # I have been putting off this book for 4 days, not making progress.
+    # moving to item 45
 
 
 if __name__ == '__main__':
