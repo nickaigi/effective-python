@@ -1,4 +1,5 @@
 from time import localtime, strftime, mktime, strptime
+from datetime import datetime, timezone
 
 def example_one():
     """
@@ -33,8 +34,19 @@ def example_two():
     print(time_str) 
 
 
+def example_three():
+    """
+    >>> 
+    2014-08-10 21:18:30+03:00
+    """
+    now = datetime(2014, 8, 10, 18, 18, 30)
+    now_utc = now.replace(tzinfo=timezone.utc)
+    now_local = now_utc.astimezone()
+    print(now_local)
+
+
 def main():
-    example_two()
+    example_three()
 
 
 if __name__ == '__main__':
