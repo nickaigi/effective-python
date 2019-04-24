@@ -49,6 +49,8 @@ def example_three():
 
 def example_four():
     """
+    Always represent the time in UTC and do conversions to local time as the
+    final step before presentation
     >>> 
     1407658710.0
     """
@@ -64,6 +66,7 @@ def example_five():
     """
     >>> 
     2014-05-02 03:33:24+00:00
+    2014-05-02 06:33:24+03:00
     """
     time_format = '%Y-%m-%d %H:%M:%S'
     arrival_nyc = '2014-05-01 23:33:24'
@@ -73,9 +76,15 @@ def example_five():
     utc_dt = pytz.utc.normalize(nyc_dt.astimezone(pytz.utc))
     print(utc_dt)
 
+    #example_six
+
+    nairobi = pytz.timezone('Africa/Nairobi')
+    nairobi_dt = nairobi.normalize(utc_dt.astimezone(nairobi))
+    print(nairobi_dt)
+
 
 def main():
-    example_two()
+    example_five()
 
 
 if __name__ == '__main__':
