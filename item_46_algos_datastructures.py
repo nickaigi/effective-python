@@ -1,6 +1,7 @@
 from collections import deque, OrderedDict, defaultdict
 from random import randint
 import heapq
+from bisect import bisect_left
 
 
 def example_one():
@@ -109,6 +110,11 @@ def example_seven():
 
 def example_eight():
     """
+    heapq operations take logarithmic time O(log(n)) where n is the size of the list
+    - same operations using a python list is O(n) linear time
+    >>> 
+    Before: [3, 4, 7, 5]
+    After:  [3, 4, 5, 7]
     """
     a = []
     heapq.heappush(a, 5)
@@ -120,11 +126,33 @@ def example_eight():
 
     print('Before:', a)
     a.sort()
-    print('After:', a)
+    print('After: ', a)
+
+
+def example_nine():
+    """
+    Searching in a list takes linear time O(n)
+    """
+    x = list(range(10**6))
+    i = x.index(991234)
+
+
+def example_ten():
+    """
+    bisect_left
+        - provides binary search through a sequence of sorted items
+        - returns an index, the insertion point of the value in the seq
+        - binary search is is O(log(n)) logarithmic, using bisect to search a
+          list of 1M takes roughly the same amount of time as index to linearly
+          search a list of 14 items.  blazing fast
+
+    """
+    x = list(range(10**6))
+    i = bisect_left(x, 991234)
 
 
 def main():
-    example_eight()
+    example_ten()
 
 
 if __name__ == '__main__':
