@@ -21,14 +21,18 @@ def example_one():
 def example_two():
     """
     Ordered Dictionary
+
+    results in an infinite loop
     """
     a = {}
     a['foo'] = 1
     a['bar'] = 2
 
     # Randomly populate 'b' to cause hash conflicts
+    # Infinite Loop
     while True:
-        z = randint(99, 1013)
+        #z = randint(99, 1013)
+        z = randint(1, 20)
         b = {}
         for i in range(z):
             b[i] = i
