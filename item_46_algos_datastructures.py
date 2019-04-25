@@ -151,6 +151,43 @@ def example_ten():
     i = bisect_left(x, 991234)
 
 
+def example_eleven():
+    """
+    Iterator Tools - itertools
+        * Linking iterators together
+            - chain - combines multiple iterators into a single sequential iterator
+
+            - cycle - repeats an iterator's items forever
+
+            - tee - splits a single iterator into multiple parallel iterators
+
+            - zip_longest - variant of 'zip' built-in that works well with iterators of different lengths
+
+        * Filtering
+            - islice - slices an iterator by numerical indexes without copying
+
+            - takewhile - returns items from an iterator while a predicate function retuns True
+
+            - dropwhile - returns items from an iterator once the predicate
+              function returns False for the first time
+
+            - filterfalse - returns all items from an iterator where a
+              predicate function returns False. Opposite of the 'filter' built-in function
+
+        * Combinations
+            - product - returns the cartesian product of items from an iterator
+              see https://en.wikipedia.org/wiki/Cartesian_product
+
+            - permutations - returns ordered permutaitons of length N with
+              items from an iterator
+
+            - combination - returns the unordered combinations of length N with
+              unrepeated items from an iterator
+    """
+    # TODO
+    pass
+
+
 def main():
     example_ten()
 
