@@ -1,3 +1,6 @@
+"""PEP 257 for best-practices for docstrings"""
+
+
 def palindrome(word):
     """Return True if the given world is a palindrome"""
     return word == word[::-1]
