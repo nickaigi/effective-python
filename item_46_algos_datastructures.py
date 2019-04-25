@@ -1,5 +1,6 @@
 from collections import deque, OrderedDict, defaultdict
 from random import randint
+import heapq
 
 
 def example_one():
@@ -88,8 +89,42 @@ def example_six():
     stats['my_counter'] += 1
 
 
+def example_seven():
+    """
+    Heap Queue
+        - heaps are useful for maintaining priority queues.
+        - insertion by any order.
+        - removal by highest priority (lowest number)
+    >>> 
+    3 4 5 7
+    """
+    a = []
+    heapq.heappush(a, 5)
+    heapq.heappush(a, 3)
+    heapq.heappush(a, 7)
+    heapq.heappush(a, 4)
+
+    print(heapq.heappop(a), heapq.heappop(a), heapq.heappop(a), heapq.heappop(a))
+
+
+def example_eight():
+    """
+    """
+    a = []
+    heapq.heappush(a, 5)
+    heapq.heappush(a, 3)
+    heapq.heappush(a, 7)
+    heapq.heappush(a, 4)
+
+    assert a[0] == heapq.nsmallest(1, a)[0] == 3
+
+    print('Before:', a)
+    a.sort()
+    print('After:', a)
+
+
 def main():
-    example_three()
+    example_eight()
 
 
 if __name__ == '__main__':
