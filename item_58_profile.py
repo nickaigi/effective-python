@@ -121,8 +121,88 @@ def example_two():
     stats.print_stats()
 
 
+def my_utility(a, b):
+    c = 1
+    for i in range(100):
+        c += a * b
+
+
+def first_func():
+    for _ in range(1000):
+        my_utility(4, 5)
+
+
+def second_func():
+    for _ in range(10):
+        my_utility(1, 3)
+
+
+def my_program():
+    for _ in range(20):
+        first_func()
+        second_func()
+
+
+def example_three():
+    """
+             20242 function calls in 0.063 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.063    0.063 item_58_profile.py:140(my_program)
+       20    0.002    0.000    0.063    0.003 item_58_profile.py:130(first_func)
+    20200    0.061    0.000    0.061    0.000 item_58_profile.py:124(my_utility)
+       20    0.000    0.000    0.001    0.000 item_58_profile.py:135(second_func)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+
+
+    -notes for Nick
+        - you may profile your program only to find that a common utility
+          function is responsible for majority of the execution time.
+
+        - default output from the profiler doesn't show how the utility
+          function is called by many different parts of your program.
+
+        - 'my_utility' function is evidently the source of most execution time,
+          but it is not immediately obvious why that function is called so many times.
+
+    ---- Callers -----
+
+    Ordered by: cumulative time
+
+    Function                                          was called by...
+                                                          ncalls  tottime  cumtime
+    item_58_profile.py:140(my_program)                <-
+    item_58_profile.py:130(first_func)                <-      20    0.002    0.062  item_58_profile.py:140(my_program)
+    item_58_profile.py:124(my_utility)                <-   20000    0.061    0.061  item_58_profile.py:130(first_func)
+                                                             200    0.001    0.001  item_58_profile.py:135(second_func)
+    item_58_profile.py:135(second_func)               <-      20    0.000    0.001  item_58_profile.py:140(my_program)
+    {method 'disable' of '_lsprof.Profiler' objects}  <-
+
+
+
+    """
+    profiler = Profile()
+    profiler.runcall(my_program)
+
+    # to extract statistics about the 'test' function's performance, we use pstats
+    stats = Stats(profiler)
+    stats.strip_dirs()
+    stats.sort_stats('cumulative')
+    stats.print_stats()
+
+    print('\n---- Callers -----\n')
+
+    # to see how many times a function is called
+    stats.print_callers()
+
+
+
+
 def main():
-    example_two()
+    example_three()
 
 
 if __name__ == '__main__':
