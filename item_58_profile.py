@@ -32,12 +32,14 @@ Meaning of profiler statistics columns:
 from random import randint
 from cProfile import Profile
 from pstats import Stats
+from bisect import bisect_left
 
 
 def insertion_sort(data):
     result = []
     for value in data:
-        insert_value(result, value)
+        # insert_value(result, value)
+        insert_value_better(result, value)
     return result
 
 
@@ -64,6 +66,46 @@ def example_one():
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
        11    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
 
+
+    - notes for Nick:
+        - we can see that the biggest use of CPU in our test is the cumulative
+          time spent in the 'insert_value' function.
+    """
+    max_size = 10**4
+    data = [randint(0, max_size) for _ in range(max_size)]
+    test = lambda: insertion_sort(data)
+
+    profiler = Profile()
+    profiler.runcall(test)
+
+    # to extract statistics about the 'test' function's performance, we use pstats
+    stats = Stats(profiler)
+    stats.strip_dirs()
+    stats.sort_stats('cumulative')
+    stats.print_stats()
+
+
+def insert_value_better(array, value):
+    i = bisect_left(array, value)
+    array.insert(i, value)
+
+
+def example_two():
+    """
+             30003 function calls in 0.018 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.018    0.018 item_58_profile.py:98(<lambda>)
+        1    0.001    0.001    0.018    0.018 item_58_profile.py:38(insertion_sort)
+    10000    0.002    0.000    0.017    0.000 item_58_profile.py:88(insert_value_better)
+    10000    0.012    0.000    0.012    0.000 {method 'insert' of 'list' objects}
+    10000    0.003    0.000    0.003    0.000 {built-in method _bisect.bisect_left}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+
+
     """
     max_size = 10**4
     data = [randint(0, max_size) for _ in range(max_size)]
@@ -80,7 +122,7 @@ def example_one():
 
 
 def main():
-    example_one()
+    example_two()
 
 
 if __name__ == '__main__':
